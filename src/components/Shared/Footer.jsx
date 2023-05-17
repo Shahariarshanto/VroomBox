@@ -40,7 +40,7 @@ const Footer = () => {
                 alt="FlowBite Logo"
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap">
-              Toyfinity
+                Toyfinity
               </span>
             </Link>
           </div>
@@ -68,11 +68,11 @@ const Footer = () => {
           <span className="text-sm text-gray-800">
             © 2023{' '}
             <Link to="/" className="hover:underline">
-            Toyfinity™
+              Toyfinity™
             </Link>
             . All Rights Reserved.
           </span>
-          
+
         </div>
       </div>
     </footer>

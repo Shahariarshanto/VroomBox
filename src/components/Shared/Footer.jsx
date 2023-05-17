@@ -1,5 +1,5 @@
 
-import Logo from '/toyfinity.ico';
+import Logo from '/vroombox.ico';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +40,7 @@ const Footer = () => {
                 alt="FlowBite Logo"
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap">
-                Toyfinity
+                VroomBox
               </span>
             </Link>
           </div>
@@ -68,7 +68,7 @@ const Footer = () => {
           <span className="text-sm text-gray-800">
             © 2023{' '}
             <Link to="/" className="hover:underline">
-              Toyfinity™
+              VroomBox™
             </Link>
             . All Rights Reserved.
           </span>

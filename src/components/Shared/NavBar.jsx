@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Logo from '/toyfinity.ico';
+import Logo from '/vroombox.ico';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -23,8 +23,8 @@ function Navbar() {
         <nav className="max-w-screen-xl mx-auto  border-gray-200">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="flex items-center">
-                    <img src={Logo} className="h-8 mr-3" alt="toyfinity logo" />
-                    <span className="self-center font-['Acme'] text-2xl font-semibold whitespace-nowrap">Toyfinity</span>
+                    <img src={Logo} className="h-8 mr-3" alt="VroomBox logo" />
+                    <span className="self-center font-['Acme'] text-2xl font-semibold whitespace-nowrap">VroomBox</span>
                 </Link>
                 <div className="flex items-center md:order-2">
                     <div className="flex items-center ml-3">

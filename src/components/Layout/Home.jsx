@@ -1,14 +1,13 @@
-import { Outlet } from "react-router-dom";
-import Footer from "../Shared/Footer";
-import Navbar from "../Shared/NavBar";
 import Banner from "../pages/Banner";
 import Gallery from "../pages/Gallery";
+import ShopByCategory from "../pages/ShopByCategory";
 
 export default function Home() {
 
   return (
     <>
-      <Banner/>
+      <Banner />
+      <ShopByCategory/>
       <Gallery/>
 
     </>

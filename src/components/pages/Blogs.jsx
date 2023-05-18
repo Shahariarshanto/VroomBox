@@ -92,7 +92,7 @@ const Blog = () => {
                   <button
                     type="button"
                     onClick={() => handleReadMore(q.id)}
-                    className="text-blue-500 hover:underline"
+                    className="text-[#ff385c] hover:underline"
                   >
                     Read more
                   </button>

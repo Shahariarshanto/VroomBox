@@ -112,7 +112,7 @@ const Blog = () => {
             onClick={(event) => event.stopPropagation()}
           >
             <img
-              className="max-w-lg rounded mx-auto mb-4"
+              className=" w-full md:max-w-lg rounded mx-auto mb-4"
               src={selectedQuestion.imageSrc}
               alt="blog"
             />

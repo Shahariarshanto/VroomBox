@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthPrvider";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -7,58 +8,49 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { createUser, signInWithGoogle } = useContext(AuthContext);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  // Navigation 
+  const location = useLocation()
+  const navigate = useNavigate()
+  const form = location.state?.form?.pathname || "/";
+
+  // Regester with email and password
+  const handleLogin = (event) => {
+    event.preventDefault();
+    console.log(email,password);
+    createUser(email, password)
+      .then(() => {
+        navigate(form)
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handlePhotoURLChange = (e) => {
-    setPhotoURL(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (name === "" || email === "" || password === "" || photoURL === "") {
-      setErrorMessage("Please fill in all fields");
-      return;
-    }
-
-    // Perform registration logic here
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Photo URL:", photoURL);
-
-    // Reset form fields and error message
-    setName("");
-    setEmail("");
-    setPassword("");
-    setPhotoURL("");
-    setErrorMessage("");
+  // Regester with google 
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then(() => {
+        navigate(form);
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
   };
 
   return (
     <div className="max-w-md mx-auto my-10 px-4">
       <h2 className="text-2xl font-bold mb-4">Registration</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleLogin} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-gray-700 font-medium">
             Name
           </label>
           <input
             type="text"
-            id="name"
             value={name}
-            onChange={handleNameChange}
+            onChange={(e) => setName(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
             required
           />
@@ -69,9 +61,8 @@ const Registration = () => {
           </label>
           <input
             type="email"
-            id="email"
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
             required
           />
@@ -82,9 +73,8 @@ const Registration = () => {
           </label>
           <input
             type="password"
-            id="password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
             required
           />
@@ -95,9 +85,8 @@ const Registration = () => {
           </label>
           <input
             type="text"
-            id="photoURL"
             value={photoURL}
-            onChange={handlePhotoURLChange}
+            onChange={(e) => setPhotoURL(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
             required
           />
@@ -106,7 +95,7 @@ const Registration = () => {
         <div>
           <button
             type="submit"
-            className="w-full bg-primary text-white font-medium py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+            className="w-full bg-[#ff385c]  text-white font-medium py-2 px-4 rounded-md hover:bg-[#b30020] transition-colors"
           >
             Register
           </button>
@@ -120,7 +109,7 @@ const Registration = () => {
       </p>
       <div className="text-center my-3">OR</div>
       <div className="flex justify-center ">
-        <button className=" flex items-center gap-4 text-white font-medium  px-4 rounded-md  transition-colors">
+        <button onClick={handleGoogleSignIn} className=" flex text-black items-center gap-4 text-white font-medium  px-4 rounded-md  transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"

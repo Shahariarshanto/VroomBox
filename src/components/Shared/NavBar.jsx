@@ -10,6 +10,7 @@ const menuItems = [
     { title: 'My Toys', link: '/my-toys' },
     { title: 'Add A Toy', link: '/add-toy' },
     { title: 'Blogs', link: '/blogs' },
+    { title: 'Login', link: '/login' },
 ];
 
 function Navbar() {

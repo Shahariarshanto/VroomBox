@@ -2,6 +2,7 @@
 import Logo from '/vroombox.ico';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { TypeAnimation } from 'react-type-animation';
 
 const Footer = () => {
   const menus = [
@@ -42,7 +43,26 @@ const Footer = () => {
               <span className="self-center text-2xl font-semibold whitespace-nowrap">
                 VroomBox
               </span>
+
             </Link>
+            <p className='mt-2 font-semibold text-gray-900'>
+              <TypeAnimation
+                sequence={[
+                  // Same String at the start will only be typed once, initially
+                  'Unleash the Joy of Play with VroomBox.',
+                  1000,
+                  'Where Playtime Takes the Fast Lane!',
+                  1000,
+                  'Rev up Your Playtime with Toy Cars!',
+                  1000,
+                  'Accelerate Your Imagination with Toy Cars!',
+                  1000,
+                ]}
+                speed={5}
+                style={{ fontSize: '1em' }}
+                repeat={Infinity}
+              />
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             {menus.map((menu, index) => (

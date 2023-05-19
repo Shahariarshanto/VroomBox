@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Logo from '/vroombox.ico';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-
-const menuItems = [
-    { title: 'Home', link: '/' },
-    { title: 'All Toys', link: '/toys' },
-    { title: 'My Toys', link: '/my-toys' },
-    { title: 'Add A Toy', link: '/add-toy' },
-    { title: 'Blogs', link: '/blogs' },
-    { title: 'Login', link: '/login' },
-];
+import { AuthContext } from '../providers/AuthPrvider';
 
 function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { user, logOut } = useContext(AuthContext);
+    // Logging out
+    const handleLogOut = () => {
+        logOut()
+            .then(() => { })
+            .catch((error) => console.error(error));
+    };
 
     const handleMobileMenuToggle = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -29,11 +28,25 @@ function Navbar() {
                 </Link>
                 <div className="flex items-center md:order-2">
                     <div className="flex items-center ml-3">
-                        <img
-                            src={Logo}
-                            className="w-8 h-8 rounded-full"
-                            alt="User Profile"
-                        />
+                        {/* Conditioal Rendering  */}
+                        {
+                            user ? (<img
+                                src={user?.photoURL || "https://cdn.pixabay.com/photo/2018/11/13/22/01/avatar-3814081_960_720.png"}
+                                className="w-8 h-8 rounded-full"
+                                alt={user?.displayName}
+                                title={user?.displayName}
+                            />) : (
+                                <NavLink
+                                    to="/register"
+                                    className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                    style={({ isActive }) => {
+                                        return { color: isActive ? "#ff385c" : "" };
+                                    }}
+                                >
+                                    Regester
+                                </NavLink>
+                            )
+                        }
                     </div>
                     <button
                         type="button"
@@ -53,19 +66,88 @@ function Navbar() {
                     id="mobile-menu-2"
                 >
                     <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-1 lg:space-x-8 md:mt-0 md:border-0 md:bg-white">
-                        {menuItems.map((item, index) => (
-                            <li key={index}>
+
+                        <li >
+                            <NavLink
+                                to='/'
+                                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                style={({ isActive }) => {
+                                    return { color: isActive ? "#ff385c" : "" };
+                                }}
+                            >
+                                Home
+                            </NavLink>
+                        </li>
+                        <li >
+                            <NavLink
+                                to='/toys'
+                                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                style={({ isActive }) => {
+                                    return { color: isActive ? "#ff385c" : "" };
+                                }}
+                            >
+                                All Toys
+                            </NavLink>
+                        </li>
+                        {/* Conditional Rendering Prrivate Route  */}
+                        {user ? (<> <li >
+                            <NavLink
+                                to='/my-toys'
+                                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                style={({ isActive }) => {
+                                    return { color: isActive ? "#ff385c" : "" };
+                                }}
+                            >
+                                My Toys
+                            </NavLink>
+                        </li>
+                            <li >
                                 <NavLink
-                                    to={item.link}
+                                    to='/add-toy'
                                     className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
                                     style={({ isActive }) => {
                                         return { color: isActive ? "#ff385c" : "" };
                                     }}
                                 >
-                                    {item.title}
+                                    Add A Toy
+                                </NavLink>
+                            </li></>) : null}
+                        <li >
+                            <NavLink
+                                to='/blogs'
+                                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                style={({ isActive }) => {
+                                    return { color: isActive ? "#ff385c" : "" };
+                                }}
+                            >
+                                Blogs
+                            </NavLink>
+                        </li>
+                        {/* login and regesteion conditionaly */}
+
+
+
+                        {user ? (
+                            <li
+                                onClick={handleLogOut}
+                                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+
+                            >
+                                Logout
+                            </li>
+                        ) : (
+                            <li>
+                                <NavLink
+                                    to="/login"
+                                    className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100"
+                                    style={({ isActive }) => {
+                                        return { color: isActive ? "#ff385c" : "" };
+                                    }}
+                                >
+                                    Login
                                 </NavLink>
                             </li>
-                        ))}
+                        )}
                     </ul>
                 </div>
             </div>

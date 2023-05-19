@@ -13,21 +13,21 @@ const CustomerTestimonials = () => {
       message: "My son absolutely loves the toy cars we purchased from your store. The quality is excellent, and the attention to detail is impressive. Highly recommended!",
       name: "Sarah Johnson",
       location: "Los Angeles, CA",
-      avatar: "https://via.placeholder.com/150",
+      avatar: "https://xsgames.co/randomusers/avatar.php?g=female",
     },
     {
       id: 2,
       message: "The toy cars we bought for our grandson exceeded our expectations. He spends hours playing with them, and the durability is outstanding. Thank you for providing such great products!",
       name: "Michael Thompson",
       location: "New York, NY",
-      avatar: "https://via.placeholder.com/150",
+      avatar: "https://xsgames.co/randomusers/avatar.php?g=male",
     },
     {
       id: 3,
       message: "I'm amazed by the variety of toy cars available in your store. The shipping was fast, and the customer service was excellent. Will definitely be a returning customer!",
       name: "Emily Davis",
       location: "Chicago, IL",
-      avatar: "https://via.placeholder.com/150",
+      avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
     },
     // Add more testimonials here...
   ];
@@ -42,7 +42,7 @@ const CustomerTestimonials = () => {
               key={testimonial.id}
               className="bg-white rounded-lg shadow p-6"
               data-aos="fade-up"
-              data-aos-duration="2000"
+              data-aos-duration="3000"
             >
               <div className="flex items-center mb-4">
                 <img src={testimonial.avatar} alt="Avatar" className="w-12 h-12 rounded-full mr-4" />

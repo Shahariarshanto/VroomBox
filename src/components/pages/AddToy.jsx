@@ -1,6 +1,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const AddToy = () => {
   const [pictureUrl, setPictureUrl] = useState("");
@@ -30,7 +31,10 @@ const AddToy = () => {
     setDescription("");
   };
 
-  return (
+  return (<>
+    <Helmet>
+      <title>VroomBox | Add a Toy</title>
+    </Helmet>
     <div className="container mx-auto px-4">
       <h1 className="text-2xl text-center font-bold my-6 text-[#ff385c]">
         Add a Toy
@@ -158,6 +162,7 @@ const AddToy = () => {
         </button>
       </form>
     </div>
+  </>
   );
 };
 

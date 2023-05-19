@@ -8,8 +8,7 @@ const Subscription = () => {
         <div
           className="md:w-1/2"
           data-aos="fade-right"
-          data-aos-duration="2000"
-          data-aos-once="true"
+          data-aos-duration="3000"
         >
           <img
             className="w-full h-auto md:max-w-lg mx-auto rounded-lg"
@@ -21,8 +20,8 @@ const Subscription = () => {
         <div
           className="md:w-1/2 mt-8 md:mt-0"
           data-aos="fade-left"
-          data-aos-duration="1000"
-          data-aos-once="true"
+          data-aos-duration="3000"
+         
         >
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Be the first to know</h2>
           <p className="text-gray-600 mb-6">

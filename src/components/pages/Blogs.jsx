@@ -1,8 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import ToyDetails from "./ToyDetails";
 
 const Blog = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+ 
+  const product = {
+    picture: "https://source.unsplash.com/random/480x360?1",
+    toyName: "Example Toy",
+    sellerName: "John Doe",
+    sellerEmail: "johndoe@example.com",
+    price: "$58.00",
+    rating: 4.5,
+    quantityAvailable: 10,
+    description:
+      "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
+  };
 
   const questions = [
     {
@@ -64,6 +79,9 @@ const Blog = () => {
 
   return (
     <section>
+      <Helmet>
+    <title>VroomBox | Blogs</title>
+  </Helmet>
       <div className="container max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12">
         <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {questions.map((q) => (
@@ -130,6 +148,8 @@ const Blog = () => {
           </div>
         </div>
       )}
+      <ToyDetails product={product} />
+
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthPrvider";
+import { Helmet } from "react-helmet-async";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ const Registration = () => {
   // Regester with email and password
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log(email,password);
+    console.log(email, password);
     createUser(email, password)
       .then(() => {
         navigate(form)
@@ -39,7 +40,10 @@ const Registration = () => {
       });
   };
 
-  return (
+  return (<>
+    <Helmet>
+    <title>VroomBox | Registration</title>
+  </Helmet>
     <div className="max-w-md mx-auto my-10 px-4">
       <h2 className="text-2xl font-bold mb-4">Registration</h2>
       <form onSubmit={handleLogin} className="space-y-4">
@@ -108,12 +112,13 @@ const Registration = () => {
         </Link>
       </p>
       <div className="text-center my-3">OR</div>
-      <div className="flex justify-center ">
-        <button onClick={handleGoogleSignIn} className=" flex text-black items-center gap-4 text-white font-medium  px-4 rounded-md  transition-colors">
+      <div className="flex justify-center bg-gray-200 p-3 rounded-lg">
+        <button onClick={handleGoogleSignIn} className=" flex text-black items-center gap-4 text-black font-medium  px-4 rounded-md  transition-colors">
+          {/* google icon  */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
+            width="30"
+            height="30"
             viewBox="0 0 48 48"
           >
             <path
@@ -137,6 +142,7 @@ const Registration = () => {
         </button>
       </div>
     </div>
+    ,</>
   );
 };
 

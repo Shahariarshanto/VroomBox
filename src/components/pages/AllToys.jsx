@@ -90,9 +90,9 @@ const customStyles = {
       subCategory: "Puzzles",
       price: 9.99,
       quantity: 8,
-    },
-    // Add more toy objects here...
-  ];
+    }
+   
+  ]
 
 
   // Handle search input change

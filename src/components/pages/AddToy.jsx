@@ -4,31 +4,49 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 const AddToy = () => {
-  const [pictureUrl, setPictureUrl] = useState("");
-  const [name, setName] = useState("");
-  const [sellerName, setSellerName] = useState("");
-  const [sellerEmail, setSellerEmail] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [rating, setRating] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [description, setDescription] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const pictureUrl = form.pictureUrl.value;
+    const sellerName = form.sellerName.value;
+    const sellerEmail = form.sellerEmail.value;
+    const subCategory = form.subCategory.value;
+    const price = form.price.value;
+    const rating = form.rating.value;
+    const quantity = form.quantity.value;
+    const description = form.description.value;
+    const newToy = {
+      name,
+      pictureUrl,
+      sellerName,
+      sellerEmail,
+      subCategory,
+      price,
+      rating,
+      quantity,
+      description,
+    }
+    console.log(newToy);
 
-    // Process the form data, e.g., send it to a server or update state
+  
 
-    // Reset the form fields after submission
-    setPictureUrl("");
-    setName("");
-    setSellerName("");
-    setSellerEmail("");
-    setSubCategory("");
-    setPrice("");
-    setRating("");
-    setQuantity("");
-    setDescription("");
+    fetch('http://localhost:9000/add-toy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      ,
+      body: JSON.stringify(newToy)
+    }
+    )
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        form.reset();
+      }
+      )
   };
 
   return (<>
@@ -46,9 +64,7 @@ const AddToy = () => {
           </label>
           <input
             type="text"
-            id="pictureUrl"
-            value={pictureUrl}
-            onChange={(e) => setPictureUrl(e.target.value)}
+            name="pictureUrl"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -59,9 +75,7 @@ const AddToy = () => {
           </label>
           <input
             type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -72,9 +86,7 @@ const AddToy = () => {
           </label>
           <input
             type="text"
-            id="sellerName"
-            value={sellerName}
-            onChange={(e) => setSellerName(e.target.value)}
+            name="sellerName"
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>
@@ -84,9 +96,7 @@ const AddToy = () => {
           </label>
           <input
             type="email"
-            id="sellerEmail"
-            value={sellerEmail}
-            onChange={(e) => setSellerEmail(e.target.value)}
+            name="sellerEmail"
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>
@@ -96,9 +106,7 @@ const AddToy = () => {
           </label>
           <input
             type="text"
-            id="subCategory"
-            value={subCategory}
-            onChange={(e) => setSubCategory(e.target.value)}
+            name="subCategory"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -109,9 +117,7 @@ const AddToy = () => {
           </label>
           <input
             type="number"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -122,9 +128,7 @@ const AddToy = () => {
           </label>
           <input
             type="number"
-            id="rating"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            name="rating"
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>
@@ -134,9 +138,7 @@ const AddToy = () => {
           </label>
           <input
             type="number"
-            id="quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            name="quantity"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -147,8 +149,7 @@ const AddToy = () => {
           </label>
           <textarea
             id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           ></textarea>

@@ -1,42 +1,35 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Modal from 'react-modal';
 import ToyDetails from "./ToyDetails";
 import PrivateRoute from "../Routes/PrivateRoute";
-
-
 //  app element (root element) for react-modal
 Modal.setAppElement("#root");
 
 
 const AllToys = () => {
-
-
-
-
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredToys, setFilteredToys] = useState([]);
+  const [toys, setToys] = useState([])
   const [isOpen, setIsOpen] = useState(false);
 
- // Styles
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    maxWidth: "1280px",
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    overflowY: 'auto', // Enable scrolling within the modal
-    maxHeight: '80vh', // Set maximum height for the modal content
-    zIndex: 9999, // Set a high z-index to keep the modal on top
-  },
-};
-
+  // Styles for View Details Modal
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      maxWidth: "1280px",
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      overflowY: 'auto', // Enable scrolling within the modal
+      maxHeight: '80vh', // Set maximum height for the modal content
+      zIndex: 9999, // Set a high z-index to keep the modal on top
+    },
+  };
 
   const product = {
     picture: "https://source.unsplash.com/random/480x360?1",
@@ -50,50 +43,16 @@ const customStyles = {
       "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
   };
 
+  useEffect(() => {
+    fetch("https://vroombox-server.vercel.app/all-toys")
+      .then(res => res.json())
+      .then(data => setToys(data))
+  }, [])
+  console.log(toys);
 
-
-  console.log(isOpen);
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
-  // Sample toy data
-  const toys = [
-    {
-      id: 1,
-      seller: "John Doe",
-      toyName: "Sports Car",
-      subCategory: "Sports Cars",
-      price: 29.99,
-      quantity: 5,
-    },
-    {
-      id: 2,
-      seller: "Jane Smith",
-      toyName: "Classic Car",
-      subCategory: "Classic Cars",
-      price: 19.99,
-      quantity: 3,
-    },
-    {
-      id: 3,
-      seller: "Mike Johnson",
-      toyName: "Robot Toy",
-      subCategory: "Robots",
-      price: 12.99,
-      quantity: 10,
-    },
-    {
-      id: 4,
-      seller: "Sarah Thompson",
-      toyName: "Puzzle Set",
-      subCategory: "Puzzles",
-      price: 9.99,
-      quantity: 8,
-    }
-   
-  ]
-
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -118,12 +77,12 @@ const customStyles = {
       {/* Modal Content */}
       <Modal
         isOpen={isOpen}
-        style={customStyles}     
+        style={customStyles}
         contentLabel="Example Modal"
       >
         <PrivateRoute>
 
-        <ToyDetails product={product} isOpen={isOpen} setIsOpen={setIsOpen} />
+          <ToyDetails product={product} isOpen={isOpen} setIsOpen={setIsOpen} />
         </PrivateRoute>
       </Modal>
 
@@ -148,7 +107,10 @@ const customStyles = {
             </div>
           </div>
         </div>
-
+        {
+          toys.length === 0 && (
+            <p className="text-center text-lg mb-2">No Toys Available</p>)
+        }
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -174,9 +136,9 @@ const customStyles = {
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
             {toysToDisplay.map((toy) => (
-              <tr key={toy.id}>
+              <tr key={toy._id}>
                 <td className="px-6 py-4 whitespace-nowrap">{toy.toyName}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{toy.seller}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{toy.sellerName}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{toy.subCategory}</td>
                 <td className="px-6 py-4 whitespace-nowrap">${toy.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">

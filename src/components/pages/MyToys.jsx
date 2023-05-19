@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowDownUpAcrossLine, faArrowUp, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { faArrowDown, faArrowUp, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FaTrash, FaEdit } from "react-icons/fa";import Modal from 'react-modal';
+import PrivateRoute from "../Routes/PrivateRoute";
+import ToyDetails from "./ToyDetails";
+import { AuthContext } from "../providers/AuthPrvider";
+
 
 const MyToys = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,9 +13,42 @@ const MyToys = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedToy, setSelectedToy] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [updatedToy, setUpdatedToy] = useState({});
-  const [updatedQuantity, setUpdatedQuantity] = useState("");
-  const [updatedDescription, setUpdatedDescription] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const {user} = useContext(AuthContext)
+   // Styles for view Details Modal
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    maxWidth: "1280px",
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    overflowY: 'auto', // Enable scrolling within the modal
+    maxHeight: '80vh', // Set maximum height for the modal content
+    zIndex: 9999, // Set a high z-index to keep the modal on top
+  },
+};
+
+
+const product = {
+  picture: "https://source.unsplash.com/random/480x360?1",
+  toyName: "Example Toy",
+  sellerName: "John Doe",
+  sellerEmail: "johndoe@example.com",
+  price: "$58.00",
+  rating: 4.5,
+  quantityAvailable: 10,
+  description:
+    "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
+};
+
+const toggleViewDetailsModal = () => {
+  setIsOpen(!isOpen);
+};
+
+
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -87,12 +124,34 @@ const MyToys = () => {
     // Add more toy objects as needed
   ];
 
-  useState(() => {
-    setToysToDisplay(toys);
-  }, []);
+  // useState(() => {
+  //   setToysToDisplay(toys);
+  // }, []);
+  useEffect(()=>{
+    fetch(`https://vroombox-server.vercel.app//toys?email=${user.email}`)
+    .then(res =>res.json())
+    .then(data=>console.log(data))
 
-  return (
+  },[])
+
+ 
+  return (<>
+  
+  {/*  View Details Modal Content */}
+  <Modal
+        isOpen={isOpen}
+        
+        style={customStyles}     
+        contentLabel="Example Modal"
+      >
+        <PrivateRoute>
+
+        <ToyDetails product={product} isOpen={isOpen} setIsOpen={setIsOpen} />
+        </PrivateRoute>
+      </Modal>
+
     <div className="relative max-w-screen-lg min-h-screen mx-auto overflow-x-auto shadow-md sm:rounded-lg">
+      
       <div className="flex justify-center mt-6">
         <div className="pb-4 bg-white">
           <label htmlFor="table-search" className="sr-only">
@@ -113,74 +172,98 @@ const MyToys = () => {
           </div>
         </div>
       </div>
-
-      <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Toy Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Seller
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Sub-category
-            </th>
-            <th scope="col" className="px-6 py-3 flex">
-              Price{" "}
+      {
+        toysToDisplay.length === 0 && (
+          <p className="text-center text-lg mb-2">You haven't added any toys yet.</p>)
+      }
+        {/* Table For My Toys  */}
+      <div className="overflow-x-auto">
+     <table className="w-full text-sm text-left text-gray-500" >
+  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+    <tr>
+      <th scope="col" className="px-6 py-3">
+        Toy Name
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Seller
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Sub-category
+      </th>
+      <th scope="col" className="px-6 py-3 flex">
+        Price{" "}
+        <button
+          onClick={handleSort}
+          className="text-xs pl-2 text-[#ff385c] font-medium focus:outline-none"
+        >
+          {sortOrder === "asc" ? (
+            <span>
+              <FontAwesomeIcon icon={faArrowUp} />
+            </span>
+          ) : (
+            <span>
+              <FontAwesomeIcon icon={faArrowDown} />
+            </span>
+          )}
+        </button>
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Available Quantity
+      </th>
+      <th scope="col" className="px-6 py-3">
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody className="bg-white divide-y divide-gray-100">
+    {toysToDisplay.map((toy) => (
+      <tr key={toy._id}>
+        <td className="px-6 py-4 whitespace-nowrap">{toy.toyName}</td>
+        <td className="px-6 py-4 whitespace-nowrap">{toy.sellerName}</td>
+        <td className="px-6 py-4 whitespace-nowrap">{toy.subCategory}</td>
+        <td className="px-6 py-4 whitespace-nowrap">${toy.price}</td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          {toy.quantity} pcs
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => toggleViewDetailsModal(toy.id)}
+              className="text-[#ff385c] underline"
+            >
+              View Details
+            </button>
+            <div className="space-x-4">
+             
               <button
-                onClick={handleSort}
-                className="text-xs pl-2 text-[#ff385c] font-medium focus:outline-none"
+                onClick={() => toggleModal(toy.id)}
+                className="text-blue-500"
               >
-                {sortOrder === "asc" ? (
-                  <span> <FontAwesomeIcon icon={faArrowUp} /></span>
-                ) :  (
-                  <span> <FontAwesomeIcon icon={faArrowDown} /></span>
-                ) }
+                <FaEdit />
               </button>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Available Quantity
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-100">
-          {toysToDisplay.map((toy) => (
-            <tr key={toy.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{toy.toyName}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{toy.seller}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{toy.subCategory}</td>
-              <td className="px-6 py-4 whitespace-nowrap">${toy.price}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {toy.quantity} pcs
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button
-                  onClick={() => toggleModal(toy.id)}
-                  className="text-[#ff385c] underline"
-                >
-                  View Details
-                </button>
-                <button
-                  onClick={() => handleDelete(toy.id)}
-                  className="ml-2 text-red-500"
-                >
-                  <FaTrash />
-                </button>
-                <button
-                  onClick={() => toggleModal(toy.id)}
-                  className="ml-2 text-blue-500"
-                >
-                  <FaEdit />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <button
+                onClick={() => handleDelete(toy.id)}
+                className="text-red-500"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+</div>
+
+
+
+
+
+
+
+
+
 
       {showModal && selectedToy && (
         <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
@@ -269,6 +352,7 @@ const MyToys = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

@@ -1,14 +1,16 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { AuthContext } from "../providers/AuthPrvider";
 
 const AddToy = () => {
+  const {user} = useContext(AuthContext)
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
+    const toyName = form.name.value;
     const pictureUrl = form.pictureUrl.value;
     const sellerName = form.sellerName.value;
     const sellerEmail = form.sellerEmail.value;
@@ -18,7 +20,7 @@ const AddToy = () => {
     const quantity = form.quantity.value;
     const description = form.description.value;
     const newToy = {
-      name,
+      toyName,
       pictureUrl,
       sellerName,
       sellerEmail,
@@ -32,7 +34,7 @@ const AddToy = () => {
 
   
 
-    fetch('http://localhost:9000/add-toy', {
+    fetch('https://vroombox-server.vercel.app/add-toy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -71,7 +73,7 @@ const AddToy = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="name" className="text-lg font-medium">
-            Name
+            Toys Name
           </label>
           <input
             type="text"
@@ -87,6 +89,7 @@ const AddToy = () => {
           <input
             type="text"
             name="sellerName"
+            defaultValue={user.displayName}
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>
@@ -97,6 +100,8 @@ const AddToy = () => {
           <input
             type="email"
             name="sellerEmail"
+            defaultValue={user.email}
+            contentEditable="false"
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>
@@ -118,6 +123,7 @@ const AddToy = () => {
           <input
             type="number"
             name="price"
+            pattern="^[0-9]+$"
             required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
@@ -129,6 +135,8 @@ const AddToy = () => {
           <input
             type="number"
             name="rating"
+            pattern="^[1-5]$"
+            required
             className="border border-gray-300 rounded-md px-3 py-2 mt-1 w-full"
           />
         </div>

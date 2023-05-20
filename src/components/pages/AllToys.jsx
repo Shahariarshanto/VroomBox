@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Modal from 'react-modal';
-import ToyDetails from "./ToyDetails";
 import PrivateRoute from "../Routes/PrivateRoute";
+import ToyDetails from "./ToyDetails";
 //  app element (root element) for react-modal
 Modal.setAppElement("#root");
 
@@ -12,6 +12,7 @@ Modal.setAppElement("#root");
 const AllToys = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredToys, setFilteredToys] = useState([]);
+    const [product, setProduct] = useState({});
   const [toys, setToys] = useState([])
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,17 +32,17 @@ const AllToys = () => {
     },
   };
 
-  const product = {
-    picture: "https://source.unsplash.com/random/480x360?1",
-    toyName: "Example Toy",
-    sellerName: "John Doe",
-    sellerEmail: "johndoe@example.com",
-    price: "$58.00",
-    rating: 4.5,
-    quantityAvailable: 10,
-    description:
-      "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
-  };
+  // const product = {
+  //   picture: "https://source.unsplash.com/random/480x360?1",
+  //   toyName: "Example Toy",
+  //   sellerName: "John Doe",
+  //   sellerEmail: "johndoe@example.com",
+  //   price: "$58.00",
+  //   rating: 4.5,
+  //   quantityAvailable: 10,
+  //   description:
+  //     "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
+  // };
 
   useEffect(() => {
     fetch("https://vroombox-server.vercel.app/all-toys")
@@ -50,8 +51,9 @@ const AllToys = () => {
   }, [])
   console.log(toys);
 
-  const toggleModal = () => {
+  const toggleModal = (toyId) => {
     setIsOpen(!isOpen);
+    setProduct(toysToDisplay.find((toy) => toy._id == toyId));
   };
 
   // Handle search input change
@@ -145,7 +147,7 @@ const AllToys = () => {
                   {toy.quantity} pcs
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <button onClick={toggleModal} className="text-[#ff385c] underline">
+                  <button onClick={()=>toggleModal(toy._id)} className="text-[#ff385c] underline">
                     View Details
                   </button>
                 </td>

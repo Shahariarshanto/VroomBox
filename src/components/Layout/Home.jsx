@@ -5,6 +5,7 @@ import Gallery from "../pages/Gallery";
 import ShopByCategory from "../pages/ShopByCategory";
 import Subscription from "../pages/Subscription";
 import { Helmet } from "react-helmet-async";
+import ProductSlider from "../pages/ProductSlider";
 
 export default function Home() {
 
@@ -14,6 +15,7 @@ export default function Home() {
     <title>VroomBox</title>
   </Helmet>
       <Banner />
+      <ProductSlider/>
       <ShopByCategory/>
       <Gallery/>
       <CustomerTestimonials/>

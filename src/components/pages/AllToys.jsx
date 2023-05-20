@@ -37,7 +37,7 @@ const AllToys = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:9000/all-toys")
+    fetch("https://vroombox-server.vercel.app/all-toys")
       .then((res) => res.json())
       .then((data) => {setToys(data); setIsLoading(false)});
   }, []);

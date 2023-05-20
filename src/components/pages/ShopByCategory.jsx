@@ -19,13 +19,13 @@ export default function ShopByCategory() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("http://localhost:9000/toys-category/EmergencyVehicles")
+    fetch("https://vroombox-server.vercel.app/toys-category/EmergencyVehicles")
       .then((res) => res.json())
       .then((data) => setEmergencyVehicles(data.slice(0, 4)));
-    fetch("http://localhost:9000/toys-category/ConstructionVehicles")
+    fetch("https://vroombox-server.vercel.app/toys-category/ConstructionVehicles")
       .then((res) => res.json())
       .then((data) => setConstructionVehicles(data.slice(0, 4)));
-    fetch("http://localhost:9000/toys-category/SuperCars")
+    fetch("https://vroombox-server.vercel.app/toys-category/SuperCars")
       .then((res) => res.json())
       .then((data) => setSuperCars(data.slice(0, 4)));
   }, []);

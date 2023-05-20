@@ -10,9 +10,7 @@ function Navbar() {
   const { user, logOut } = useContext(AuthContext);
   // Logging out
   const handleLogOut = () => {
-    logOut()
-      .then(() => {})
-      .catch((error) => console.error(error));
+    logOut();
   };
 
   const handleMobileMenuToggle = () => {

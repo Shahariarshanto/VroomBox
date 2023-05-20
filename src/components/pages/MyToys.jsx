@@ -33,7 +33,10 @@ const MyToys = () => {
   useEffect(() => {
     fetch(`https://vroombox-server.vercel.app/toys?email=${user.email}`)
       .then((res) => res.json())
-      .then((data) => {setToys(data); setIsLoading(false)});
+      .then((data) => {
+        setToys(data);
+        setIsLoading(false);
+      });
   }, []);
   // Styles for view Details Modal
   const customStyles = {
@@ -77,15 +80,14 @@ const MyToys = () => {
   const handleSort = () => {
     setSortOrder(!sortOrder);
     if (sortOrder) {
-      fetch(`http://localhost:9000/toys-ascending?email=${user.email}`)
+      fetch(`https://vroombox-server.vercel.app/toys-ascending?email=${user.email}`)
         .then((res) => res.json())
-        .then((data) => setToys(data));  
+        .then((data) => setToys(data));
     } else {
-      fetch(`http://localhost:9000/toys-descending?email=${user.email}`)
+      fetch(`https://vroombox-server.vercel.app/toys-descending?email=${user.email}`)
         .then((res) => res.json())
-        .then((data) => setToys(data));  
+        .then((data) => setToys(data));
     }
-    
   };
 
   // Delete a Toy
@@ -97,19 +99,19 @@ const MyToys = () => {
         {
           label: "Yes",
           onClick: () => {
-           fetch(`http://localhost:9000/delete-toy/${toyId}`, {
-             method: "DELETE",
-           }).then((response) => {
-             if (response.ok) {
-               const remaining = toysToDisplay.filter(
-                 (toy) => toy._id !== toyId
-               );
-               setToys(remaining);
-               toast("Toy deleted successfully");
-             } else {
-               toast("Failed to delete toy");
-             }
-           });
+            fetch(`https://vroombox-server.vercel.app/delete-toy/${toyId}`, {
+              method: "DELETE",
+            }).then((response) => {
+              if (response.ok) {
+                const remaining = toysToDisplay.filter(
+                  (toy) => toy._id !== toyId
+                );
+                setToys(remaining);
+                toast("Toy deleted successfully");
+              } else {
+                toast("Failed to delete toy");
+              }
+            });
           },
         },
         {
@@ -121,7 +123,7 @@ const MyToys = () => {
       ],
     });
   };
-  
+
   // Update a toy
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -138,8 +140,8 @@ const MyToys = () => {
       updatedQuantity,
       updatedDescription,
     };
-    console.log(updatedProduct);
-    fetch(`http://localhost:9000/update-toy/${selectedToy._id}`, {
+
+    fetch(`https://vroombox-server.vercel.app/update-toy/${selectedToy._id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -161,7 +163,6 @@ const MyToys = () => {
           updated.description = updatedDescription;
           updated.toyName = updatedToyName;
           updated.category = updatedCategory;
-          console.log(updated);
           const newToys = [updated, ...remaining];
           setToys(newToys);
           toast(`${updatedToyName} Updated Successfully`);

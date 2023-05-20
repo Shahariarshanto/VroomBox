@@ -1,7 +1,6 @@
 import React from "react";
 
 const ProductCard = ({ slide }) => {
-  console.log(slide);
   return (
     <div className="bg-white rounded-lg shadow-lg p-4">
       <img

@@ -24,7 +24,6 @@ const AuthProviders = ({ children }) => {
   };
 
   const signIn = (email, password) => {
-    console.log(auth, email, password);
     return signInWithEmailAndPassword(auth, email, password);
   };
   // Create user Using  Google

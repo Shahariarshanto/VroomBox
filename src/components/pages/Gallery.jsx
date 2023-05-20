@@ -15,7 +15,7 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="max-w-screen-xl mx-auto py-8">
       <h1 className="text-2xl text-center font-bold text-[#ff385c] mb-8">
         Image Gallery
       </h1>

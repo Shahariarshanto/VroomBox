@@ -1,11 +1,13 @@
-import { createContext, useEffect, useState } from "react";
 import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  getAuth, GoogleAuthProvider, onAuthStateChanged,
+  getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut
+  signOut,
 } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
 import app from "../Firebase/firebase.config";
 
 export const AuthContext = createContext(null);
@@ -38,7 +40,6 @@ const AuthProviders = ({ children }) => {
   // observe auth state change
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("auth state change", currentUser);
       setUser(currentUser);
       setLoading(false);
     });

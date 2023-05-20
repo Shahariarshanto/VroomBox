@@ -5,6 +5,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { Helmet } from "react-helmet-async";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,21 +15,25 @@ import PrivateRoute from "../Routes/PrivateRoute";
 import { AuthContext } from "../providers/AuthPrvider";
 import ToyDetails from "./ToyDetails";
 
+import { MagnifyingGlass } from "react-loader-spinner";
+
 const MyToys = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredToys, setFilteredToys] = useState([]);
   const [toys, setToys] = useState([]);
   const [product, setProduct] = useState({});
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState(false);
   const [selectedToy, setSelectedToy] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
 
   // fetch data from server
   useEffect(() => {
     fetch(`https://vroombox-server.vercel.app/toys?email=${user.email}`)
       .then((res) => res.json())
-      .then((data) => setToys(data));
+      .then((data) => {setToys(data); setIsLoading(false)});
   }, []);
   // Styles for view Details Modal
   const customStyles = {
@@ -68,31 +75,53 @@ const MyToys = () => {
 
   // Sort Toys by Price
   const handleSort = () => {
-    if (sortOrder === "asc") {
-      const sortedToys = [...toysToDisplay].sort((a, b) => b.price - a.price);
-      setToysToDisplay(sortedToys);
-      setSortOrder("desc");
+    setSortOrder(!sortOrder);
+    if (sortOrder) {
+      fetch(`http://localhost:9000/toys-ascending?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setToys(data));  
     } else {
-      const sortedToys = [...toysToDisplay].sort((a, b) => a.price - b.price);
-      setToysToDisplay(sortedToys);
-      setSortOrder("asc");
+      fetch(`http://localhost:9000/toys-descending?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setToys(data));  
     }
+    
   };
+
   // Delete a Toy
   const handleDelete = (toyId) => {
-    // Delete Toy From Server
-    fetch(`http://localhost:9000/delete-toy/${toyId}`, {
-      method: "DELETE",
-    }).then((response) => {
-      if (response.ok) {
-        const remaining = toysToDisplay.filter((toy) => toy._id !== toyId);
-        setToysToDisplay(remaining);
-        toast("Toy deleted successfully");
-      } else {
-        toast("Failed to delete toy");
-      }
+    confirmAlert({
+      title: "Confirmation",
+      message: "Are you sure you want to delete?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+           fetch(`http://localhost:9000/delete-toy/${toyId}`, {
+             method: "DELETE",
+           }).then((response) => {
+             if (response.ok) {
+               const remaining = toysToDisplay.filter(
+                 (toy) => toy._id !== toyId
+               );
+               setToys(remaining);
+               toast("Toy deleted successfully");
+             } else {
+               toast("Failed to delete toy");
+             }
+           });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            // Do nothing
+          },
+        },
+      ],
     });
   };
+  
   // Update a toy
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -134,8 +163,8 @@ const MyToys = () => {
           updated.category = updatedCategory;
           console.log(updated);
           const newToys = [updated, ...remaining];
-          setToysToDisplay(newToys);
-          toast("Toy Updated Successfully");
+          setToys(newToys);
+          toast(`${updatedToyName} Updated Successfully`);
         }
       });
     setShowModal(false);
@@ -143,6 +172,9 @@ const MyToys = () => {
 
   return (
     <>
+      <Helmet>
+        <title>VroomBox | My Toys</title>
+      </Helmet>
       {/*  View Details Modal Content */}
       <Modal isOpen={isOpen} style={customStyles} contentLabel="Example Modal">
         <PrivateRoute>
@@ -151,6 +183,7 @@ const MyToys = () => {
       </Modal>
 
       <ToastContainer />
+
       <div className="relative max-w-screen-lg min-h-screen mx-auto overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex justify-center mt-6">
           <div className="pb-4 bg-white">
@@ -170,6 +203,20 @@ const MyToys = () => {
                 onChange={handleSearchChange}
               />
             </div>
+            {isLoading && (
+              <div className="flex justify-center mt-2">
+                <MagnifyingGlass
+                  visible={true}
+                  height="80"
+                  width="80"
+                  ariaLabel="MagnifyingGlass-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="MagnifyingGlass-wrapper"
+                  glassColor="#c0efff"
+                  color="#e15b64"
+                />
+              </div>
+            )}
           </div>
         </div>
         {toysToDisplay.length === 0 && (
@@ -197,7 +244,7 @@ const MyToys = () => {
                     onClick={handleSort}
                     className="text-xs pl-2 text-[#ff385c] font-medium focus:outline-none"
                   >
-                    {sortOrder === "asc" ? (
+                    {sortOrder ? (
                       <span>
                         <FontAwesomeIcon icon={faArrowUp} />
                       </span>

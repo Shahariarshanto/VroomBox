@@ -8,19 +8,17 @@ import ShopByCategory from "../pages/ShopByCategory";
 import Subscription from "../pages/Subscription";
 
 export default function Home() {
-
   return (
     <>
       <Helmet>
         <title>VroomBox</title>
       </Helmet>
       <Banner />
-      <ProductSlider />
-      <ShopByCategory />
       <Gallery />
+      <ShopByCategory />
       <CustomerTestimonials />
+      <ProductSlider />
       <Subscription />
-      
     </>
   );
 }

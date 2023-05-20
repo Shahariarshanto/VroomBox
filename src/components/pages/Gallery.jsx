@@ -67,7 +67,7 @@ const Gallery = () => {
 
   return (
     <div className="max-w-screen-xl px-4 mx-auto my-4 overflow-x-auto">
-      <h1 className='text-2xl text-center font-bold my-6 text-[#ff385c]'>Toy Gallery</h1>
+      <h1 className='text-2xl text-center font-bold my-6 text-[#ff385c]'>Toys Gallery</h1>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 space-x-4">
         {images.map((image) => (
           <div key={image.id}>

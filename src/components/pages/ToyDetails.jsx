@@ -3,9 +3,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { FaStar } from "react-icons/fa";
 import Rating from "react-rating";
 
-
-const ToyDetails = ({product ,isOpen,setIsOpen}) => {
-     
+const ToyDetails = ({ product, isOpen, setIsOpen }) => {
   return (
     <>
       {isOpen && (
@@ -25,8 +23,8 @@ const ToyDetails = ({product ,isOpen,setIsOpen}) => {
                 src={product.pictureUrl}
               />
               <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                  {product.sellerName}
+                <h2 className="text-sm title-font text-gray-700 tracking-widest">
+                  Seller: {product.sellerName}
                 </h2>
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
                   {product.toyName}
@@ -56,14 +54,12 @@ const ToyDetails = ({product ,isOpen,setIsOpen}) => {
                   </div>
                   <div className="flex ml-auto items-center">
                     <span className="mr-3">Quantity</span>
-                    <span className="text-gray-600">
-                      {product.quantity}
-                    </span>
+                    <span className="text-gray-600">{product.quantity}</span>
                   </div>
                 </div>
                 <div className="flex">
                   <button className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
-                    Button
+                    Buy Now
                   </button>
                 </div>
               </div>
@@ -76,12 +72,3 @@ const ToyDetails = ({product ,isOpen,setIsOpen}) => {
 };
 
 export default ToyDetails;
-
-
-
-;
-
-
-
-
-

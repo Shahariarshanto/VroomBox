@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "react-modal";
+import { ToastContainer, toast } from "react-toastify";
 import PrivateRoute from "../Routes/PrivateRoute";
 import { AuthContext } from "../providers/AuthPrvider";
 import ToyDetails from "./ToyDetails";
@@ -35,18 +36,6 @@ const MyToys = () => {
       zIndex: 9999, // Set a high z-index to keep the modal on top
     },
   };
-
-  // const product = {
-  //   picture: "https://source.unsplash.com/random/480x360?1",
-  //   toyName: "Example Toy",
-  //   sellerName: "John Doe",
-  //   sellerEmail: "johndoe@example.com",
-  //   price: "$58.00",
-  //   rating: 4.5,
-  //   quantityAvailable: 10,
-  //   description:
-  //     "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
-  // };
 
   const toggleViewDetailsModal = (toyId) => {
     setIsOpen(!isOpen);
@@ -78,22 +67,23 @@ const MyToys = () => {
       setToysToDisplay(sortedToys);
       setSortOrder("asc");
     }
+    
   };
 
   const handleDelete = (toyId) => {
    
     // Delete Toy From Server
-    
       fetch(`http://localhost:9000/delete-toy/${toyId}`, {
         method: "DELETE",
       })
         .then((response) => {
           if (response.ok) {
-            console.log(response);
-            console.log("Toy deleted successfully");
+            const remaining = toysToDisplay.filter(toy => toy._id !== toyId)
+            setToysToDisplay(remaining)
+           toast("Toy deleted successfully");
             // Perform any additional actions or update the UI as needed
           } else {
-            console.error("Failed to delete toy");
+            toast("Failed to delete toy");
             // Handle the error or display an error message to the user
           }
         })
@@ -102,7 +92,7 @@ const MyToys = () => {
           // Handle the error or display an error message to the user
         });
   };
-
+// Update a toy
   const handleUpdate = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -119,6 +109,31 @@ const MyToys = () => {
       updatedDescription,
     };
     console.log(updatedProduct);
+    fetch(`http://localhost:9000/update-toy/${selectedToy._id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedProduct),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        
+        if (data.modifiedCount > 0) {
+          // updating state
+          const remaining = toysToDisplay.filter((toy) => toy._id !== selectedToy._id);
+          const updated = toysToDisplay.find((toy) => toy._id == selectedToy._id);
+          updated.quantity = updatedQuantity;
+          updated.price = updatedPrice;
+          updated.description = updatedDescription;
+          updated.toyName = updatedToyName;
+          updated.category = updatedCategory;
+          console.log(updated);
+          const newToys = [updated, ...remaining];
+          setToysToDisplay(newToys);
+          toast("Toy Updated Successfully")
+        }
+      });
     setShowModal(false);
   };
 
@@ -137,7 +152,9 @@ const MyToys = () => {
         </PrivateRoute>
       </Modal>
 
+        <ToastContainer />
       <div className="relative max-w-screen-lg min-h-screen mx-auto overflow-x-auto shadow-md sm:rounded-lg">
+       
         <div className="flex justify-center mt-6">
           <div className="pb-4 bg-white">
             <label htmlFor="table-search" className="sr-only">
@@ -261,6 +278,7 @@ const MyToys = () => {
                   type="text"
                   className="border border-gray-300 rounded-md p-2"
                   name="price"
+                  defaultValue={selectedToy.price}
                 />
               </div>
 
@@ -272,6 +290,7 @@ const MyToys = () => {
                   type="text"
                   className="border border-gray-300 rounded-md p-2"
                   name="toyName"
+                  defaultValue={selectedToy.toyName}
                 />
               </div>
 
@@ -282,6 +301,7 @@ const MyToys = () => {
                 <input
                   type="text"
                   name="category"
+                  defaultValue={selectedToy.subCategory}
                   className="border border-gray-300 rounded-md p-2"
                 />
               </div>
@@ -294,6 +314,7 @@ const MyToys = () => {
                   type="text"
                   className="border border-gray-300 rounded-md p-2"
                   name="quantity"
+                  defaultValue={selectedToy.quantity}
                 />
               </div>
               <div className="flex flex-col mb-4">
@@ -305,6 +326,7 @@ const MyToys = () => {
                   className="border border-gray-300 rounded-md p-2"
                   rows={4}
                   name="description"
+                  defaultValue={selectedToy.description}
                 />
               </div>
               <div className="flex justify-end">

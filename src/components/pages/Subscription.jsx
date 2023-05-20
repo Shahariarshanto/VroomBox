@@ -1,12 +1,12 @@
-import React from 'react';
 import 'aos/dist/aos.css';
+import React from 'react';
 
 const Subscription = () => {
   return (
     <div className="flex items-center justify-center py-12 bg-gray-100 shadow-lg">
       <div className="container mx-auto flex flex-col md:flex-row items-center">
         <div
-          className="md:w-1/2"
+          className="md:w-1/2 "
           data-aos="fade-right"
           data-aos-duration="3000"
         >
@@ -18,7 +18,7 @@ const Subscription = () => {
           />
         </div>
         <div
-          className="md:w-1/2 mt-8 md:mt-0"
+          className="md:w-1/2 mt-8 mx-4 md:mt-0"
           data-aos="fade-left"
           data-aos-duration="3000"
          

@@ -1,30 +1,33 @@
 
-import Logo from '/vroombox.ico';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
+import Logo from '/vroombox.ico';
 
 const Footer = () => {
   const menus = [
     {
-      title: 'Resources',
+      title: "Resources",
       links: [
-        { label: 'React Router', url: 'https://reactrouter.com/' },
-        { label: 'Tailwind CSS', url: 'https://tailwindcss.com/' },
+        { label: "React Router", url: "https://reactrouter.com/" },
+        { label: "Tailwind CSS", url: "https://tailwindcss.com/" },
       ],
     },
     {
-      title: 'Follow us',
+      title: "Follow us",
       links: [
-        { label: 'Github', url: 'https://github.com/Shahariarshanto' },
-        { label: 'Facebook', url: 'https://www.facebook.com/SheikhShahariarShanto' },
+        { label: "Github", url: "https://github.com/Shahariarshanto" },
+        {
+          label: "Facebook",
+          url: "https://www.facebook.com/SheikhShahariarShanto",
+        },
       ],
     },
     {
-      title: 'Legal',
+      title: "Legal",
       links: [
-        { label: 'Privacy Policy', url: '#' },
-        { label: 'Terms & Conditions', url: '#' },
+        { label: "Privacy Policy", url: "/privacy-policy" },
+        { label: "Terms & Conditions", url: "/terms-and-conditions" },
       ],
     },
   ];

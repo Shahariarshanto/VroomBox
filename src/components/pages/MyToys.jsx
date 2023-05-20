@@ -14,13 +14,20 @@ import ToyDetails from "./ToyDetails";
 
 const MyToys = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [toysToDisplay, setToysToDisplay] = useState([]);
+  const [toys, setToys] = useState([]);
   const [product, setProduct] = useState({});
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedToy, setSelectedToy] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useContext(AuthContext);
+
+  // fetch data from server
+  useEffect(() => {
+    fetch(`https://vroombox-server.vercel.app/toys?email=${user.email}`)
+      .then((res) => res.json())
+      .then((data) => setToys(data));
+  }, []);
   // Styles for view Details Modal
   const customStyles = {
     content: {
@@ -36,20 +43,23 @@ const MyToys = () => {
       zIndex: 9999, // Set a high z-index to keep the modal on top
     },
   };
-
+  // Toggle For Modal
   const toggleViewDetailsModal = (toyId) => {
     setIsOpen(!isOpen);
     setProduct(toysToDisplay.find((toy) => toy._id == toyId));
   };
-
+  // Search
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     const filteredToys = toys.filter((toy) =>
-      toy.toyName.toLowerCase().includes(e.target.value.toLowerCase())
+      toy.toyName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setToysToDisplay(filteredToys);
+    setFilteredToys(filteredToys);
   };
+  // Determine the array to display based on whether there is a search term or not
+  const toysToDisplay = searchTerm ? filteredToys : toys;
 
+  // Modal for Update
   const toggleModal = (toyId) => {
     const selectedToy = toysToDisplay.find((toy) => toy._id == toyId);
     setSelectedToy(selectedToy);
@@ -67,32 +77,23 @@ const MyToys = () => {
       setToysToDisplay(sortedToys);
       setSortOrder("asc");
     }
-    
   };
-
+  // Delete a Toy
   const handleDelete = (toyId) => {
-   
     // Delete Toy From Server
-      fetch(`http://localhost:9000/delete-toy/${toyId}`, {
-        method: "DELETE",
-      })
-        .then((response) => {
-          if (response.ok) {
-            const remaining = toysToDisplay.filter(toy => toy._id !== toyId)
-            setToysToDisplay(remaining)
-           toast("Toy deleted successfully");
-            // Perform any additional actions or update the UI as needed
-          } else {
-            toast("Failed to delete toy");
-            // Handle the error or display an error message to the user
-          }
-        })
-        .catch((error) => {
-          console.error("An error occurred", error);
-          // Handle the error or display an error message to the user
-        });
+    fetch(`http://localhost:9000/delete-toy/${toyId}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.ok) {
+        const remaining = toysToDisplay.filter((toy) => toy._id !== toyId);
+        setToysToDisplay(remaining);
+        toast("Toy deleted successfully");
+      } else {
+        toast("Failed to delete toy");
+      }
+    });
   };
-// Update a toy
+  // Update a toy
   const handleUpdate = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -118,11 +119,14 @@ const MyToys = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        
         if (data.modifiedCount > 0) {
           // updating state
-          const remaining = toysToDisplay.filter((toy) => toy._id !== selectedToy._id);
-          const updated = toysToDisplay.find((toy) => toy._id == selectedToy._id);
+          const remaining = toysToDisplay.filter(
+            (toy) => toy._id !== selectedToy._id
+          );
+          const updated = toysToDisplay.find(
+            (toy) => toy._id == selectedToy._id
+          );
           updated.quantity = updatedQuantity;
           updated.price = updatedPrice;
           updated.description = updatedDescription;
@@ -131,17 +135,11 @@ const MyToys = () => {
           console.log(updated);
           const newToys = [updated, ...remaining];
           setToysToDisplay(newToys);
-          toast("Toy Updated Successfully")
+          toast("Toy Updated Successfully");
         }
       });
     setShowModal(false);
   };
-
-  useEffect(() => {
-    fetch(`https://vroombox-server.vercel.app/toys?email=${user.email}`)
-      .then((res) => res.json())
-      .then((data) => setToysToDisplay(data));
-  }, []);
 
   return (
     <>
@@ -152,9 +150,8 @@ const MyToys = () => {
         </PrivateRoute>
       </Modal>
 
-        <ToastContainer />
+      <ToastContainer />
       <div className="relative max-w-screen-lg min-h-screen mx-auto overflow-x-auto shadow-md sm:rounded-lg">
-       
         <div className="flex justify-center mt-6">
           <div className="pb-4 bg-white">
             <label htmlFor="table-search" className="sr-only">

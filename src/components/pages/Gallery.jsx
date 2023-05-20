@@ -1,77 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
 const Gallery = () => {
-  const images = [
-    {
-      id: 1,
-      src: 'https://images.unsplash.com/photo-1511377537649-c17e440ef4b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-      alt: 'Featured Image',
-    },
-    {
-      id: 2,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg',
-      alt: 'Image 1',
-    },
-    {
-      id: 3,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg',
-      alt: 'Image 2',
-    },
-    {
-      id: 4,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg',
-      alt: 'Image 3',
-    },
-    {
-      id: 5,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg',
-      alt: 'Image 4',
-    },
-    {
-      id: 6,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg',
-      alt: 'Image 5',
-    },
-    {
-      id: 7,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg',
-      alt: 'Image 6',
-    },
-    {
-      id: 8,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg',
-      alt: 'Image 7',
-    },
-    {
-      id: 9,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg',
-      alt: 'Image 8',
-    },
-    {
-      id: 10,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg',
-      alt: 'Image 9',
-    },
-    {
-      id: 11,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg',
-      alt: 'Image 10',
-    },
-    {
-      id: 12,
-      src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg',
-      alt: 'Image 11',
-    },
-  ];
+  const [images, setImages] = useState([]);
 
+  useEffect(() => {
+    // Free Public Api Key
+    const apiKey = "36588208-138f6fcbc03717ed8541e525d";
+    const url = `https://pixabay.com/api/?key=${apiKey}&q=toy+car&per_page=12&image_height=192`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setImages(data.hits);
+      });
+  }, []);
 
   return (
-    <div className="max-w-screen-xl px-4 mx-auto my-4 overflow-x-auto">
-      <h1 className='text-2xl text-center font-bold my-6 text-[#ff385c]'>Toys Gallery</h1>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 space-x-4">
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl text-center font-bold text-[#ff385c] mb-8">
+        Image Gallery
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {images.map((image) => (
-          <div key={image.id}>
-            <img className="h-auto max-w-full rounded-lg" src={image.src} alt={image.alt} />
+          <div key={image.id} className="bg-white rounded-lg shadow-md">
+            <img
+              className="object-cover h-48 w-full rounded-t-lg"
+              src={image.largeImageURL}
+              alt={image.user}
+            />
           </div>
         ))}
       </div>

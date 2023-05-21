@@ -1,26 +1,25 @@
 import React, { useContext, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthPrvider";
-import { Helmet } from "react-helmet-async";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const { signIn, signInWithGoogle } = useContext(AuthContext);
 
-  // Navigation 
-  const location = useLocation()
-  const navigate = useNavigate()
+  // Navigation
+  const location = useLocation();
+  const navigate = useNavigate();
   const form = location.state?.form?.pathname || "/";
 
   // Sign in with email and password
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log(email, password);
     signIn(email, password)
       .then(() => {
-        navigate(form)
+        navigate(form);
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -59,7 +58,10 @@ const Login = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-gray-700 font-medium">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium"
+            >
               Password
             </label>
             <input
@@ -70,7 +72,9 @@ const Login = () => {
               required
             />
           </div>
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
           <div>
             <button
               type="submit"
@@ -88,7 +92,10 @@ const Login = () => {
         </p>
         <div className="text-center my-3">OR</div>
         <div className="flex justify-center bg-gray-200 p-3 rounded-lg">
-          <button onClick={handleGoogleSignIn} className=" flex text-black items-center gap-4 text-black font-medium  px-4 rounded-md  transition-colors">
+          <button
+            onClick={handleGoogleSignIn}
+            className=" flex text-black items-center gap-4 text-black font-medium  px-4 rounded-md  transition-colors"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"

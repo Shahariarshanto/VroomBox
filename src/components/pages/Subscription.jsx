@@ -4,7 +4,7 @@ import React from 'react';
 const Subscription = () => {
   return (
     <div className="flex items-center justify-center py-12 bg-gray-100 shadow-lg">
-      <div className="container mx-auto flex flex-col md:flex-row items-center">
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center">
         <div
           className="md:w-1/2 "
           data-aos="fade-right"

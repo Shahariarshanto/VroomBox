@@ -9,7 +9,7 @@ const Banner = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [images, setImages] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:9000/banner-images")
+    fetch("https://vroombox-server.vercel.app/banner-images")
       .then((res) => res.json())
       .then((data) => setImages(data[0].img));
   }, []);

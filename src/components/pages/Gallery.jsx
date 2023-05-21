@@ -17,7 +17,7 @@ const Gallery = () => {
   return (
     <div className="max-w-screen-xl mx-auto py-8">
       <h1 className="text-2xl text-center font-bold text-[#ff385c] mb-8">
-        Image Gallery
+        Toys Gallery
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {images.map((image) => (

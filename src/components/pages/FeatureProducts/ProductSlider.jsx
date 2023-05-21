@@ -11,7 +11,7 @@ const ProductSlider = () => {
 
   // fetch data from backend
   useEffect(() => {
-    fetch("https://vroombox-server.vercel.app/all-toys")
+    fetch("https://vroombox-server.vercel.app/all-toys-data")
       .then((res) => res.json())
       .then((data) => setSlides(data));
   }, []);

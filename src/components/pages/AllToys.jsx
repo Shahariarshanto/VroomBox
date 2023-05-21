@@ -75,7 +75,7 @@ const AllToys = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:9000/all-toys?page=${currentPage}&limit=${itemsPerPage}`
+      `https://vroombox-server.vercel.app/all-toys?page=${currentPage}&limit=${itemsPerPage}`
     )
       .then((response) => response.json())
       .then((data) => {

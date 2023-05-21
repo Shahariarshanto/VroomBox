@@ -11,6 +11,7 @@ import ToyDetails from "./ToyDetails";
 
 import ReactPaginate from "react-paginate";
 import "react-paginate/theme/basic/react-paginate.css";
+import { useNavigate } from "react-router-dom";
 
 // app element (root element) for react-modal
 Modal.setAppElement("#root");
@@ -23,6 +24,7 @@ const AllToys = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // Styles for View Details Modal
   const customStyles = {
@@ -46,7 +48,8 @@ const AllToys = () => {
       setIsOpen(!isOpen);
       setProduct(toys.find((toy) => toy._id === toyId));
     } else {
-      toast.error("Please Login to View Details");
+      toast.error("You have to log in first to view details"),
+        navigate("/login");
     }
   };
 

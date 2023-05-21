@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import Modal from "react-modal";
 import Rating from "react-rating";
+import { useNavigate } from "react-router-dom";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,11 +19,15 @@ export default function ShopByCategory() {
   const [product, setProduct] = useState({});
   const { user } = useContext(AuthContext);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetch("https://vroombox-server.vercel.app/toys-category/EmergencyVehicles")
       .then((res) => res.json())
       .then((data) => setEmergencyVehicles(data.slice(0, 4)));
-    fetch("https://vroombox-server.vercel.app/toys-category/ConstructionVehicles")
+    fetch(
+      "https://vroombox-server.vercel.app/toys-category/ConstructionVehicles"
+    )
       .then((res) => res.json())
       .then((data) => setConstructionVehicles(data.slice(0, 4)));
     fetch("https://vroombox-server.vercel.app/toys-category/SuperCars")
@@ -47,7 +52,10 @@ export default function ShopByCategory() {
   };
   // Modal for View Details
   const toggleModal = (toyId, tab) => {
-    user ? setIsOpen(!isOpen) : toast.error("Please Login to View Details");
+    user
+      ? setIsOpen(!isOpen)
+      : (toast.error("You have to log in first to view details"),
+        navigate("/login"));
     setProduct(tab.find((toy) => toy._id == toyId));
   };
   return (

@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import ToyDetails from "./ToyDetails";
 
 const Blog = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
- 
-  const product = {
-    picture: "https://source.unsplash.com/random/480x360?1",
-    toyName: "Example Toy",
-    sellerName: "John Doe",
-    sellerEmail: "johndoe@example.com",
-    price: "$58.00",
-    rating: 4.5,
-    quantityAvailable: 10,
-    description:
-      "Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan."
-  };
-
   const questions = [
     {
       id: 1,
-      imageSrc: "https://source.unsplash.com/random/480x360?1",
+      imageSrc:
+        "https://stytch.com/blog/wp-content/uploads/2022/01/How-a-refresh-token-is-generated-and-used-1100x579.png",
       question:
         "What is an access token and refresh token? How do they work and where should we store them on the client-side?",
       answer:
@@ -30,21 +17,23 @@ const Blog = () => {
     },
     {
       id: 2,
-      imageSrc: "https://source.unsplash.com/random/480x360?2",
+      imageSrc:
+        "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20191104165821/SQL-Vs-NoSQL1.png",
       question: "Compare SQL and NoSQL databases?",
       answer:
         "SQL (Structured Query Language) and NoSQL (Not only SQL) are two types of database management systems with different approaches. SQL databases are based on a structured and predefined schema, typically using tables with rows and columns. They enforce strong consistency and support ACID (Atomicity, Consistency, Isolation, Durability) transactions. NoSQL databases, on the other hand, are designed for unstructured and flexible data models. They offer high scalability and performance by using a variety of data models, such as key-value pairs, documents, graphs, or wide-column stores. NoSQL databases sacrifice some consistency guarantees for scalability and horizontal scaling.",
     },
     {
       id: 3,
-      imageSrc: "https://source.unsplash.com/random/480x360?3",
+      imageSrc:
+        "https://blog.logrocket.com/wp-content/uploads/2022/06/Nest-JS-vs-Express-js.png",
       question: "What is Express.js? What is Nest.js?",
       answer:
         "Express.js is a popular web application framework for Node.js. It provides a minimal and flexible set of features for building web applications and APIs. Nest.js is a progressive Node.js framework for building efficient, scalable, and maintainable server-side applications. It is built on top of Express.js and enhances it with additional features and architectural patterns inspired by Angular. Nest.js promotes the use of TypeScript and follows a modular and testable approach to building applications. It is well-suited for large-scale enterprise applications.",
     },
     {
       id: 4,
-      imageSrc: "https://source.unsplash.com/random/480x360?4",
+      imageSrc: "https://intellipaat.com/mediaFiles/2015/08/Aggregation.jpg",
       question: "What is MongoDB aggregate and how does it work?",
       answer:
         "MongoDB's aggregate is a powerful operation used for data processing and aggregation. It allows you to perform complex queries and transformations on the data stored in a MongoDB database. The aggregate operation takes an array of stages, where each stage represents a specific operation or transformation to apply to the data. These stages can include filtering, grouping, sorting, joining, and performing mathematical operations on the data. The stages are executed in order, with the output of each stage becoming the input for the next. Aggregate provides a flexible and expressive way to perform data analysis and reporting in MongoDB. It allows you to perform operations that go beyond simple queries and retrieve aggregated results based on your specific requirements.",
@@ -80,8 +69,8 @@ const Blog = () => {
   return (
     <section>
       <Helmet>
-    <title>VroomBox | Blogs</title>
-  </Helmet>
+        <title>VroomBox | Blogs</title>
+      </Helmet>
       <div className="container max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12">
         <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {questions.map((q) => (
@@ -148,8 +137,6 @@ const Blog = () => {
           </div>
         </div>
       )}
-      <ToyDetails product={product} />
-
     </section>
   );
 };
